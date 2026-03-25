@@ -46,12 +46,11 @@ const Wallet = () => {
       }}
     >
       <Box>
-      {/* Balance Text */}
+     
       <Typography sx={{ fontSize: 14, opacity: 0.8 }}>
         Balance
       </Typography>
 
-      {/* Amount */}
       <Typography
         sx={{
           fontSize: { xs: 32, sm: 46 },
@@ -63,7 +62,6 @@ const Wallet = () => {
       </Typography>
       </Box>
 
-      {/* Buttons */}
       <Box sx={{ display: "flex", gap: 2 }}>
         <Button
           variant="text"

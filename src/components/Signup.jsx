@@ -45,7 +45,7 @@ const Signup = () => {
   return (
     <div className={styles.container}>
       
-      {/* 🔥 LEFT SIDE (Branding) */}
+      
       <div className={styles.left}>
         <div className={styles.brand}>
           <div className={styles.logo}>ShuffleB</div>
@@ -63,7 +63,6 @@ const Signup = () => {
         </div>
       </div>
 
-      {/* 🔥 RIGHT SIDE (Signup Card) */}
       <div className={styles.right}>
         <div className={styles.card}>
           <h2 className={styles.title}>Create Account</h2>

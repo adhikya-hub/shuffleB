@@ -21,7 +21,7 @@ const ResultModal = ({ open, type, amount, onClose }) => {
         {type === "win" ? (
           <>
             <Typography variant="h5" sx={{ mb: 2, color: "#0a26ff" }}>
-              🎉 You Won!
+               You Won!
             </Typography>
 
             <Typography>You earned ₹{amount}</Typography>
@@ -29,7 +29,7 @@ const ResultModal = ({ open, type, amount, onClose }) => {
         ) : (
           <>
             <Typography variant="h5" sx={{ mb: 2, color: "#ff3b3b" }}>
-              ❌ You Lost
+               You Lost
             </Typography>
 
             <Typography>Better luck next time!</Typography>

@@ -26,13 +26,13 @@ const [newBalance, setNewBalance] = useState("");
     setUsers(getUsers());
   }, []);
 
-  // 🔄 Save + refresh
+  
   const updateUsers = (updated) => {
     saveUsers(updated);
     setUsers(updated);
   };
 
-  // ➕ Add user
+
  const handleAddUser = () => {
   if (!newEmail.trim() || !newBalance) return alert("Fill all fields");
 
@@ -53,19 +53,19 @@ const [newBalance, setNewBalance] = useState("");
   saveUsers(updated);
   setUsers(updated);
 
-  // 🔥 reset + hide form
+ 
   setNewEmail("");
   setNewBalance("");
   setShowAddForm(false);
 };
 
-  // ❌ Delete user
+  
   const deleteUser = (email) => {
     const updated = users.filter(u => u.email !== email);
     updateUsers(updated);
   };
 
-  // ✏️ Edit balance
+
   const updateBalance = (email, value) => {
     const updated = users.map(u => {
       if (u.email === email) {
@@ -76,12 +76,12 @@ const [newBalance, setNewBalance] = useState("");
     updateUsers(updated);
   };
 
-  // 🔍 Search filter
+
   const filtered = users.filter(u =>
     u.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  // 🔽 Sort by balance
+
   const sorted = [...filtered].sort((a, b) => {
   if (sortType === "balanceAsc") return a.balance - b.balance;
   if (sortType === "balanceDesc") return b.balance - a.balance;
@@ -89,24 +89,26 @@ const [newBalance, setNewBalance] = useState("");
   return 0;
 });
 
-  // 📊 Totals
+ 
   const totalUsers = users.length;
   const totalBalance = users.reduce((sum, u) => sum + u.balance, 0);
 
   return (
     <Box sx={{ padding: 3 }}>
 
-      {/* 🔥 TITLE */}
+      
       <Typography variant="h4" sx={{ mb: 2 }}>
         Admin Panel
       </Typography>
 
-      {/* 📊 METRICS */}
+     
       <Box sx={{ display: "flex", gap: 4, mb: 3 }}>
         <Typography>Total Users: {totalUsers}</Typography>
         <Typography>Total Balance: ₹{totalBalance}</Typography>
       </Box>
-
+     <Box sx={{gap: 2,
+    
+    p: 2,}}>
       <TextField
   select
   label="Sort"
@@ -115,6 +117,7 @@ const [newBalance, setNewBalance] = useState("");
   size="small"
   sx={{
     minWidth: 150,
+    marginRight: 2,
     "& .MuiInputBase-input": {
       color: "white"
     },
@@ -139,25 +142,35 @@ const [newBalance, setNewBalance] = useState("");
   <MenuItem value="alpha">A → Z</MenuItem>
 </TextField>
 
-      {/* 🔍 SEARCH + ADD USER */}
-      <Box sx={{ display: "flex", gap: 2, mb: 3 }}>
         <TextField
-          label="Search user"
-          variant="outlined"
-          size="small"
-          onChange={(e) => setSearch(e.target.value)}
-        />
+    label="Search user"
+    variant="outlined"
+    size="small"
+    onChange={(e) => setSearch(e.target.value)}
+    sx={{
+      "& .MuiInputBase-input": { color: "white" },
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": { borderColor: "#fff" },
+        "&:hover fieldset": { borderColor: "#fff" }
+      },
+      "& .MuiInputLabel-root": { color: "#ccc" },
+      "& .MuiSvgIcon-root": { color: "white" }
+    }}
+  />
+  
 
-        <TextField
-          label="New user email"
-          size="small"
-          value={newEmail}
-          onChange={(e) => setNewEmail(e.target.value)}
-        />
+</Box>
 
-        <Box sx={{ mb: 3 }}>
+      
+    
 
-  {/* Button */}
+        
+
+ <Box sx={{gap: 2,
+    
+    p: 2, }}>
+
+  
   {!showAddForm && (
     <Button
       variant="contained"
@@ -167,7 +180,6 @@ const [newBalance, setNewBalance] = useState("");
     </Button>
   )}
 
-  {/* Form */}
   {showAddForm && (
     <Box sx={{ display: "flex", gap: 2, mt: 2, flexWrap: "wrap" }}>
 
@@ -227,9 +239,8 @@ const [newBalance, setNewBalance] = useState("");
     </Box>
   )}
 </Box>
-      </Box>
+      
 
-      {/* 📋 TABLE */}
       <Paper sx={{
     background: "#4d4d4d",
     color: "white",

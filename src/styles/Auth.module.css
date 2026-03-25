@@ -5,7 +5,7 @@
   color: white;
 }
 
-/* LEFT SIDE */
+
 .left {
   flex: 1;
   display: flex;
@@ -14,7 +14,7 @@
   padding: 3rem;
 }
 
-/* RIGHT SIDE */
+
 .right {
   flex: 1;
   display: flex;
@@ -22,13 +22,11 @@
   align-items: center;
 }
 
-/* BRAND BLOCK */
 .brand {
   max-width: 32rem;
   text-align: left;
 }
 
-/* LOGO */
 .logo {
   font-family: "Copperplate", "Copperplate Gothic Bold", serif;
   font-size: 7rem;
@@ -41,7 +39,7 @@
   -webkit-text-fill-color: transparent;
 }
 
-/* TAGLINE */
+
 .tagline {
   font-size: 1.1rem;
   font-weight: 600;
@@ -49,7 +47,7 @@
   margin-top: 0.6rem;
 }
 
-/* DESCRIPTION */
+
 .description {
   font-size: 0.95rem;
   color: #bbb;
@@ -57,7 +55,7 @@
   line-height: 1.7;
 }
 
-/* CARD */
+
 .card {
   width: 100%;
   max-width: 26rem;
@@ -67,13 +65,12 @@
   box-shadow: 0 0 40px rgba(10, 38, 255, 0.2);
 }
 
-/* TITLE */
 .title {
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-/* INPUT */
+
 .input {
   width: 100%;
   padding: 0.9rem;
@@ -89,7 +86,7 @@
   outline: 1px solid #0a26ff;
 }
 
-/* BUTTON */
+
 .button {
   width: 100%;
   padding: 0.9rem;
@@ -107,7 +104,6 @@
   background: #081dcc;
 }
 
-/* LINK */
 .link {
   margin-top: 1rem;
   text-align: center;
@@ -121,7 +117,7 @@
   font-weight: 500;
 }
 
-/* MOBILE */
+
 @media (max-width: 768px) {
   .container {
     flex-direction: column;

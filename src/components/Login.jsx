@@ -39,8 +39,7 @@ const Login = () => {
 
   return (
     <div className={styles.container}>
-      
-      {/* 🔥 LEFT SIDE (Branding) */}
+
       <div className={styles.left}>
         <div className={styles.brand}>
           <div className={styles.logo}>ShuffleB</div>
@@ -58,7 +57,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* 🔥 RIGHT SIDE (Login Card) */}
+
       <div className={styles.right}>
         <div className={styles.card}>
           <h2 className={styles.title}>Welcome Back</h2>

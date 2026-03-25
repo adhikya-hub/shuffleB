@@ -4,10 +4,9 @@ import Signup from "./components/Signup";
 import Game from "./components/Game";
 import Admin from "./components/Admin";
 import { getCurrentUser } from "./utils/storage";
-import Navbar from "./components/Navbar";
+import Nav from "./components/Nav";
 
 
-// Protected Route
 const PrivateRoute = ({ children }) => {
   const user = getCurrentUser();
   return user ? children : <Navigate to="/login" />;
@@ -19,23 +18,20 @@ function App() {
   return (
     <Router>
       
-    <Navbar />  
+    <Nav />  
   
       <Routes>
 
-        {/* ✅ Signup (default) */}
         <Route
           path="/"
           element={!user ? <Signup /> : <Navigate to="/game" />}
         />
 
-        {/* ✅ Login */}
         <Route
           path="/login"
           element={!user ? <Login /> : <Navigate to="/game" />}
         />
 
-        {/* ✅ Game (Protected) */}
         <Route
           path="/game"
           element={
@@ -45,7 +41,6 @@ function App() {
           }
         />
 
-        {/* Admin */}
         <Route path="/admin" element={<Admin />} />
 
       </Routes>
