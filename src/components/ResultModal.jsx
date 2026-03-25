@@ -1,6 +1,6 @@
 import { Modal, Box, Typography, Button } from "@mui/material";
 
-const ResultModal = ({ open, type, amount, onClose }) => {
+const ResultModal = ({ open, type, amount, bet, onClose }) => {
   return (
     <Modal open={open}>
       <Box
@@ -29,7 +29,7 @@ const ResultModal = ({ open, type, amount, onClose }) => {
         ) : (
           <>
             <Typography variant="h5" sx={{ mb: 2, color: "#ff3b3b" }}>
-               You Lost
+               You Lost ₹{bet}
             </Typography>
 
             <Typography>Better luck next time!</Typography>
