@@ -1,24 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Game from "./components/Game";
+import Admin from "./components/Admin";
+import { getCurrentUser } from "./utils/storage";
+import Navbar from "./components/Navbar";
+
+
+// Protected Route
+const PrivateRoute = ({ children }) => {
+  const user = getCurrentUser();
+  return user ? children : <Navigate to="/login" />;
+};
 
 function App() {
+  const user = getCurrentUser();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      
+    <Navbar />  
+  
+      <Routes>
+
+        {/* ✅ Signup (default) */}
+        <Route
+          path="/"
+          element={!user ? <Signup /> : <Navigate to="/game" />}
+        />
+
+        {/* ✅ Login */}
+        <Route
+          path="/login"
+          element={!user ? <Login /> : <Navigate to="/game" />}
+        />
+
+        {/* ✅ Game (Protected) */}
+        <Route
+          path="/game"
+          element={
+            <PrivateRoute>
+              <Game />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Admin */}
+        <Route path="/admin" element={<Admin />} />
+
+      </Routes>
+    </Router>
   );
 }
 
