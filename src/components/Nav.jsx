@@ -1,14 +1,20 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import { getCurrentUser } from "../utils/storage";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const user = getCurrentUser();
+  const navigate= useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
+
     
-    window.location.href = "/login";
+    
+    window.location.reload()
+    navigate("/login")
+    
   };
 
   if (!user) return null;
