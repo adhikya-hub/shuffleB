@@ -7,14 +7,7 @@ import Wallet from "./Wallet";
 import styles from "../styles/Game.module.css";
 import { useSnackbar } from "notistack";
 import ResultModal from "./ResultModal";
-
-const rowStyle = {
-  display: "flex",
-  justifyContent: "center",
-  gap: 2,
-  mb: 2,
-  flexWrap: "wrap"
-};
+import GameCards from "./GameCards";
 
 const FLIP_DURATION = 600;
 
@@ -44,7 +37,7 @@ const Game = () => {
 
   useEffect(() => {
     if (!gameStarted) return;
-    if (selected.length !== 0) return; 
+    if (selected.length !== 0) return;
 
     const timeout = setTimeout(() => {
       shuffleAll(matched);
@@ -54,8 +47,8 @@ const Game = () => {
   }, [selected, matched, gameStarted]);
 
   const shuffleAll = (matchedList) => {
-    setRow1(prev => shuffleUnmatched(prev, matchedList));
-    setRow2(prev => shuffleUnmatched(prev, matchedList));
+    setRow1((prev) => shuffleUnmatched(prev, matchedList));
+    setRow2((prev) => shuffleUnmatched(prev, matchedList));
   };
 
   const handleClick = (value, row, index) => {
@@ -63,23 +56,22 @@ const Game = () => {
     if (matched.includes(value)) return;
 
     if (selected.length === 1 && selected[0].row === row) return;
-    if (selected.some(s => s.row === row && s.index === index)) return;
+    if (selected.some((s) => s.row === row && s.index === index)) return;
     if (selected.length === 2) return;
 
     const newSel = [...selected, { value, row, index }];
     setSelected(newSel);
 
     if (newSel.length === 2) {
-      setAttempts(prev => prev - 1);
+      setAttempts((prev) => prev - 1);
 
       const [a, b] = newSel;
       const isMatch = a.value === b.value;
 
       if (isMatch) {
-        setMatched(prev => [...prev, a.value]);
+        setMatched((prev) => [...prev, a.value]);
       }
 
-      
       setTimeout(() => {
         setSelected([]);
       }, FLIP_DURATION);
@@ -121,14 +113,11 @@ const Game = () => {
     setBet("");
   };
 
- 
   const isOpen = (row, index) => {
     return (
-      selected.some(s => s.row === row && s.index === index) ||
-      matched.some(m =>
-        row === "row1"
-          ? row1[index] === m
-          : row2[index] === m
+      selected.some((s) => s.row === row && s.index === index) ||
+      matched.some((m) =>
+        row === "row1" ? row1[index] === m : row2[index] === m,
       )
     );
   };
@@ -159,11 +148,10 @@ const Game = () => {
 
   return (
     <div className={styles.container}>
-
       {!gameStarted && <Wallet />}
 
       {!gameStarted && (
-        <Typography sx={{ marginTop: "2rem" }}>
+        <Typography className={styles.pulseText}>
           Choose a bet amount to start playing.
         </Typography>
       )}
@@ -196,7 +184,7 @@ const Game = () => {
 
       {gameStarted && (
         <>
-          <Typography sx={{mb:2}}>
+          <Typography sx={{ mb: 2 }}>
             Pick one card from each row and match all pairs.
           </Typography>
 
@@ -205,70 +193,44 @@ const Game = () => {
           </Typography>
 
           <Box
-  sx={{
-    display: "flex",
-    justifyContent: { xs: "center", sm: "flex-end" },
-    mb: 2
-  }}
->
-  <Button
-    variant="outlined"
-    onClick={() => {
-      setResultType("lose");
-      setResultOpen(true);
-    }}
-    sx={{
-      color: "#ff4d4d",
-      borderColor: "#ff4d4d",
-      "&:hover": {
-        borderColor: "#ff4d4d",
-        background: "rgba(255,0,0,0.1)"
-      }
-    }}
-  >
-    Quit Game
-  </Button>
-</Box>
-
-          <Box sx={rowStyle}>
-            {row1.map((n, i) => {
-              const open = isOpen("row1", i);
-
-              return (
-                <Box
-                  key={i}
-                  className={styles.cardWrapper}
-                  sx={{ width: 100, height: 130 }}
-                  onClick={() => handleClick(n, "row1", i)}
-                >
-                  <div className={`${styles.cardInner} ${open ? styles.flip : ""}`}>
-                    <div className={`${styles.cardFace} ${styles.front}`}>?</div>
-                    <div className={`${styles.cardFace} ${styles.back}`}>{n}</div>
-                  </div>
-                </Box>
-              );
-            })}
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "center", sm: "flex-end" },
+              mb: 2,
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setResultType("lose");
+                setResultOpen(true);
+              }}
+              sx={{
+                color: "#ff4d4d",
+                borderColor: "#ff4d4d",
+                "&:hover": {
+                  borderColor: "#ff4d4d",
+                  background: "rgba(255,0,0,0.1)",
+                },
+              }}
+            >
+              Quit Game
+            </Button>
           </Box>
 
-          <Box sx={rowStyle}>
-            {row2.map((n, i) => {
-              const open = isOpen("row2", i);
+          <GameCards
+            row={row1}
+            rowName="row1"
+            isOpen={isOpen}
+            handleClick={handleClick}
+          />
 
-              return (
-                <Box
-                  key={i}
-                  className={styles.cardWrapper}
-                  sx={{ width: 100, height: 130 }}
-                  onClick={() => handleClick(n, "row2", i)}
-                >
-                  <div className={`${styles.cardInner} ${open ? styles.flip : ""}`}>
-                    <div className={`${styles.cardFace} ${styles.front}`}>?</div>
-                    <div className={`${styles.cardFace} ${styles.back}`}>{n}</div>
-                  </div>
-                </Box>
-              );
-            })}
-          </Box>
+          <GameCards
+            row={row2}
+            rowName="row2"
+            isOpen={isOpen}
+            handleClick={handleClick}
+          />
         </>
       )}
 

@@ -5,18 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 const Nav = () => {
   const user = getCurrentUser();
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
+  //logout and redirect to login page
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
 
-    
-    
-    window.location.reload()
-    navigate("/login")
-    
+    window.location.reload(); //to rerender
+    navigate("/login");
   };
 
+  //no navbar until user is logged in
   if (!user) return null;
 
   return (
@@ -30,7 +29,7 @@ const Nav = () => {
             fontFamily: '"Copperplate", "Copperplate Gothic Bold", serif',
             fontSize: "2rem",
             fontWeight: 700,
-            letterSpacing: "0.05em"
+            letterSpacing: "0.05em",
           }}
         >
           ShuffleB
@@ -39,7 +38,15 @@ const Nav = () => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <AccountCircleIcon />
 
-          <Typography variant="body1">
+          <Typography
+            variant="body1"
+            sx={{
+              maxWidth: 90,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+          >
             {user.email}
           </Typography>
 
@@ -48,7 +55,7 @@ const Nav = () => {
             onClick={handleLogout}
             sx={{
               color: "#0a26ff",
-              marginLeft: 1
+              marginLeft: 1,
             }}
           >
             Logout

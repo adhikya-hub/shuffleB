@@ -17,10 +17,9 @@ const Signup = () => {
     }
 
     if (password.length < 8) {
-      return enqueueSnackbar(
-        "Password must be at least 8 characters",
-        { variant: "warning" }
-      );
+      return enqueueSnackbar("Password must be at least 8 characters", {
+        variant: "warning",
+      });
     }
 
     let users = getUsers();
@@ -44,8 +43,6 @@ const Signup = () => {
 
   return (
     <div className={styles.container}>
-      
-      
       <div className={styles.left}>
         <div className={styles.brand}>
           <div className={styles.logo}>ShuffleB</div>

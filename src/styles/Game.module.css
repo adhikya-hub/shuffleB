@@ -3,10 +3,12 @@
   text-align: center;
 }
 
+/* matches */
 .attempts {
   margin-top: 20px;
   color: #ccc;
 }
+
 
 .betBox {
   margin-top: 1rem;
@@ -44,6 +46,7 @@
   background: #081dcc;
 }
 
+/* card styles */
 .cardWrapper {
   perspective: 1000px;
 }
@@ -76,10 +79,30 @@
 }
 
 
-
 .back {
   background: #0a26ff;
   transform: rotateY(180deg);
   
+}
+
+/* pulse style for chose bet */
+.pulseText {
+  font-weight: 600;
+  margin-top: 2rem;
+  letter-spacing: 0.05rem;
+  animation: pulse 2s infinite;
+  display: inline-block;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 

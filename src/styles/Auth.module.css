@@ -1,10 +1,10 @@
+/* Login and signup  */
 .container {
   min-height: 100vh;
   display: flex;
   background: #0b0b0b;
   color: white;
 }
-
 
 .left {
   flex: 1;
@@ -13,7 +13,6 @@
   align-items: center;
   padding: 3rem;
 }
-
 
 .right {
   flex: 1;
@@ -29,16 +28,15 @@
 
 .logo {
   font-family: "Copperplate", "Copperplate Gothic Bold", serif;
-  font-size: 7rem;
+  font-size: clamp(3rem, 8vw, 7rem);
   font-weight: 700;
   letter-spacing: 0.05em;
-  
+
   background: linear-gradient(135deg, #0a26ff, #5a6bff);
-  
+
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-
 
 .tagline {
   font-size: 1.1rem;
@@ -47,14 +45,12 @@
   margin-top: 0.6rem;
 }
 
-
 .description {
   font-size: 0.95rem;
   color: #bbb;
   margin-top: 1rem;
   line-height: 1.7;
 }
-
 
 .card {
   width: 100%;
@@ -70,7 +66,6 @@
   margin-bottom: 1.5rem;
 }
 
-
 .input {
   width: 100%;
   padding: 0.9rem;
@@ -85,7 +80,6 @@
 .input:focus {
   outline: 1px solid #0a26ff;
 }
-
 
 .button {
   width: 100%;
@@ -116,7 +110,6 @@
   cursor: pointer;
   font-weight: 500;
 }
-
 
 @media (max-width: 768px) {
   .container {

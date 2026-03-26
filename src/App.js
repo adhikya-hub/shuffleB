@@ -1,11 +1,15 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Game from "./components/Game";
 import Admin from "./components/Admin";
 import { getCurrentUser } from "./utils/storage";
 import Nav from "./components/Nav";
-
 
 const PrivateRoute = ({ children }) => {
   const user = getCurrentUser();
@@ -17,11 +21,9 @@ function App() {
 
   return (
     <Router>
-      
-    <Nav />  
-  
-      <Routes>
+      <Nav />
 
+      <Routes>
         <Route
           path="/"
           element={!user ? <Signup /> : <Navigate to="/game" />}
@@ -41,8 +43,14 @@ function App() {
           }
         />
 
-        <Route path="/admin" element={<Admin />} />
-
+        <Route
+          path="/admin"
+          element={
+            <PrivateRoute>
+              <Admin />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </Router>
   );
