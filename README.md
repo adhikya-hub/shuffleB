@@ -25,6 +25,8 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - Credentials stored securely in localStorage
 - Session persistence across refresh
 
+<img width="1920" height="1008" alt="sinup" src="https://github.com/user-attachments/assets/3acd587e-23d5-476c-b4c8-e8445da42545" />
+
 ---
 
 ### Wallet System
@@ -32,6 +34,8 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - Add money functionality
 - Bet amount is deducted before gameplay
 - Winnings are added automatically
+
+<img width="1920" height="1004" alt="wallet" src="https://github.com/user-attachments/assets/28772f38-a1ed-4508-a3fb-27382f748812" />
 
 ---
 
@@ -47,6 +51,9 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - 2 rows × 5 cards each
 - Same numbers in both rows, shuffled differently
 - Select 1 card from each row to match
+
+<img width="1920" height="1004" alt="game" src="https://github.com/user-attachments/assets/0f9b8ae3-0429-4962-b0dd-85190c18c273" />
+
 
 #### Anti-Cheat Logic
 - Cards reshuffle dynamically after moves
@@ -71,6 +78,8 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - Add new users
 - Delete users
 - View total users & total balance
+
+<img width="1920" height="1008" alt="adminpanel" src="https://github.com/user-attachments/assets/be1eea1e-be91-47f2-9daa-9857945eeb4e" />
 
 ---
 
