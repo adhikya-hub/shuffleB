@@ -1,7 +1,11 @@
 # ShuffleB – Betting Card Matching Game
 
 ## 🔗 Live Demo
-https://shuffleb-nu.vercel.app/
+
+- Main Application: https://shuffleb-nu.vercel.app/  
+- Admin Panel: https://shuffleb-nu.vercel.app/admin  
+
+Note: Please log in to access the Admin page. In this demo, all users can access the admin panel.
 
 ---
 
@@ -21,7 +25,6 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - Credentials stored securely in localStorage
 - Session persistence across refresh
 
-
 ---
 
 ### Wallet System
@@ -29,6 +32,14 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - Add money functionality
 - Bet amount is deducted before gameplay
 - Winnings are added automatically
+
+---
+
+### Betting System
+- Minimum bet > ₹0
+- Maximum bet ₹5000
+- Winning = 3 × bet amount
+- Losing or quitting = bet lost
 
 ---
 
@@ -47,14 +58,6 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - No match → cards flip back  
 - Match all pairs → win  
 - Limited attempts (20)
-
----
-
-### Betting System
-- Minimum bet > ₹0
-- Maximum bet ₹5000
-- Winning = 3 × bet amount
-- Losing or quitting = bet lost
 
 ---
 
@@ -84,7 +87,7 @@ The application simulates a full-stack system using frontend-only logic, focusin
 ## How to Run Locally
 
 ```bash
-git clone https://github.com/your-username/shuffleb.git
+git clone https://github.com/adhikya-hub/shuffleB.git
 cd betting-game
 npm install
 npm start
