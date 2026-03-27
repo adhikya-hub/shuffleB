@@ -4,35 +4,40 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { useEffect, useState } from "react";
+
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Game from "./components/Game";
 import Admin from "./components/Admin";
-import { getCurrentUser } from "./utils/storage";
 import Nav from "./components/Nav";
 
+import { getCurrentUser } from "./utils/storage";
+
+
 const PrivateRoute = ({ children }) => {
-  const user = getCurrentUser();
-  return user ? children : <Navigate to="/login" />;
+  const [user, setUser] = useState(undefined); 
+
+  useEffect(() => {
+    const currentUser = getCurrentUser();
+    setUser(currentUser);
+  }, []);
+
+ 
+  if (user === undefined) return null;
+
+  return user ? children : <Navigate to="/login" replace />;
 };
 
 function App() {
-  const user = getCurrentUser();
-
   return (
     <Router>
       <Nav />
 
       <Routes>
-        <Route
-          path="/"
-          element={!user ? <Signup /> : <Navigate to="/game" />}
-        />
-
-        <Route
-          path="/login"
-          element={!user ? <Login /> : <Navigate to="/game" />}
-        />
+        
+        <Route path="/" element={<Signup />} />
+        <Route path="/login" element={<Login />} />
 
         <Route
           path="/game"
@@ -51,6 +56,9 @@ function App() {
             </PrivateRoute>
           }
         />
+
+        
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
   );
