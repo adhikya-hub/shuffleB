@@ -189,6 +189,15 @@ const Admin = () => {
               size="small"
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": { color: "white" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#fff" },
+                  "&:hover fieldset": { borderColor: "#fff" },
+                },
+                "& .MuiInputLabel-root": { color: "#ccc" },
+              }}
+
             />
 
             <TextField
@@ -197,6 +206,14 @@ const Admin = () => {
               size="small"
               value={newBalance}
               onChange={(e) => setNewBalance(e.target.value)}
+              sx={{
+                "& .MuiInputBase-input": { color: "white" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": { borderColor: "#fff" },
+                  "&:hover fieldset": { borderColor: "#fff" },
+                },
+                "& .MuiInputLabel-root": { color: "#ccc" },
+              }}
             />
 
             <Button variant="contained" onClick={handleAddUser}>
