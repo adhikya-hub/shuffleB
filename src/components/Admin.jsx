@@ -123,7 +123,7 @@ const Admin = () => {
         }}
       >
         <Typography sx={{ fontSize: 14, color: "#ccc" }}>
-          ⚠️ Demo Mode: This application uses localStorage.
+          ⚠️ Demo Mode: This application uses localStorage for data persistence. Admin access is available to all logged-in users for demonstration purposes.
         </Typography>
       </Box>
 
@@ -145,7 +145,17 @@ const Admin = () => {
           value={sortType}
           onChange={(e) => setSortType(e.target.value)}
           size="small"
-          sx={{ minWidth: 150, mr: 2 }}
+          sx={{
+            minWidth: 150,
+            mr: 2,
+            "& .MuiInputBase-input": { color: "white" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "#aaa" },
+              "&:hover fieldset": { borderColor: "#fff" },
+            },
+            "& .MuiInputLabel-root": { color: "#aaa" },
+            "& .MuiSvgIcon-root": { color: "white" },
+          }}
         >
           <MenuItem value="balanceDesc">Balance ↓</MenuItem>
           <MenuItem value="balanceAsc">Balance ↑</MenuItem>
@@ -156,6 +166,13 @@ const Admin = () => {
           label="Search user"
           size="small"
           onChange={(e) => setSearch(e.target.value)}
+          sx={{
+            "& .MuiInputBase-input": { color: "white" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "#fff" },
+            },
+            "& .MuiInputLabel-root": { color: "#ccc" },
+          }}
         />
       </Box>
 
