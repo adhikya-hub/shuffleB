@@ -244,7 +244,7 @@ const Game = () => {
             <>
               <h3>Bet Amount: ₹{bet}</h3>
               <button
-                className={styles.button}
+                className={styles.startButton}
                 onClick={handleStartGame}
               >
                 Start Game

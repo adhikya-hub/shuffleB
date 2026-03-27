@@ -116,3 +116,27 @@
   }
 }
 
+/* Start Game Button Animation */
+.startButton {
+  padding: 10px 16px;
+  background: #0a26ff;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  animation: pulseButton 1.5s infinite;
+}
+
+@keyframes pulseButton {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
