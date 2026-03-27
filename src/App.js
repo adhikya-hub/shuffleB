@@ -4,7 +4,6 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 import Login from "./components/Login";
 import Signup from "./components/Signup";
