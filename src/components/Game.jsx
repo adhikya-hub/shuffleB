@@ -14,6 +14,7 @@ const MAX_ATTEMPTS = 20;
 const MAX_BET = 5000;
 const FLIP_DURATION = 600;
 const SHUFFLE_DELAY = 5000;
+const SINGLE_SELECT_DELAY = 3000;
 
 const Game = () => {
   const [row1, setRow1] = useState([]);
@@ -33,14 +34,20 @@ const Game = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  /* Initialize Game */
+  /* Start Game */
   useEffect(() => {
     const { row1, row2 } = generateGame();
     setRow1(row1);
     setRow2(row2);
   }, []);
 
-  /* Auto Shuffle 1. After Delay 2. After Unmatch */
+  /* Shuffle helper */
+  const shuffleUnmatchedCards = (matchedList) => {
+    setRow1((prev) => shuffleUnmatched(prev, matchedList));
+    setRow2((prev) => shuffleUnmatched(prev, matchedList));
+  };
+
+  /* Auto Shuffle when idle (no selection) */
   useEffect(() => {
     if (!gameStarted) return;
     if (selected.length !== 0) return;
@@ -52,10 +59,23 @@ const Game = () => {
     return () => clearTimeout(timeout);
   }, [selected, matched, gameStarted]);
 
-  const shuffleUnmatchedCards = (matchedList) => {
-    setRow1((prev) => shuffleUnmatched(prev, matchedList));
-    setRow2((prev) => shuffleUnmatched(prev, matchedList));
-  };
+  /* Shuffle when ONE card selected and user inactive */
+  useEffect(() => {
+    if (!gameStarted) return;
+    if (selected.length !== 1) return;
+
+    const timeout = setTimeout(() => {
+      // flip back 
+      setSelected([]);
+
+      // then shuffle AFTER flip animation
+      setTimeout(() => {
+        shuffleUnmatchedCards(matched);
+      }, 200);
+    }, SINGLE_SELECT_DELAY);
+
+    return () => clearTimeout(timeout);
+  }, [selected, matched, gameStarted]);
 
   /* Card Click Logic */
   const handleCardClick = (value, row, index) => {
@@ -87,7 +107,18 @@ const Game = () => {
       }
 
       setTimeout(() => {
+        // flip back 
         setSelected([]);
+
+        if (!isMatch) {
+          // shuffle after flip animation finishes
+          setTimeout(() => {
+            setMatched((prevMatched) => {
+              shuffleUnmatchedCards(prevMatched);
+              return prevMatched;
+            });
+          }, 200);
+        }
       }, FLIP_DURATION);
     }
   };
