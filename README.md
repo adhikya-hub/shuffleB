@@ -35,7 +35,7 @@ The application simulates a full-stack system using frontend-only logic, focusin
 - Bet amount is deducted before gameplay
 - Winnings are added automatically
 
-<img width="1920" height="1004" alt="wallet" src="https://github.com/user-attachments/assets/28772f38-a1ed-4508-a3fb-27382f748812" />
+<img width="1920" height="1004" alt="bet" src="https://github.com/user-attachments/assets/ee1edbe5-0a07-4fe3-8743-c13428af3da0" />
 
 ---
 
