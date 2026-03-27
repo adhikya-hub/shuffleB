@@ -23,9 +23,10 @@ const Admin = () => {
   const [newUsername, setNewUsername] = useState("");
   const [newBalance, setNewBalance] = useState("");
 
-  // Load users
+  /*Load users */
   useEffect(() => {
-    setUsers(getUsers());
+    const data = getUsers();
+    setUsers(Array.isArray(data) ? data : []);
   }, []);
 
   const updateUsers = (updatedUsers) => {
@@ -33,7 +34,7 @@ const Admin = () => {
     setUsers(updatedUsers);
   };
 
-  // Add User
+  /* Add User */
   const handleAddUser = () => {
     const username = newUsername.trim();
     const balance = Number(newBalance);
@@ -42,10 +43,10 @@ const Admin = () => {
       return alert("Fill all fields");
     }
 
-    const currentUsers = getUsers();
+    const currentUsers = getUsers() || [];
 
     const exists = currentUsers.find(
-      (user) => user.username === username
+      (user) => user?.username === username
     );
 
     if (exists) {
@@ -68,18 +69,18 @@ const Admin = () => {
     setShowAddForm(false);
   };
 
-  // Delete User
+  /* Delete User */
   const handleDeleteUser = (username) => {
     const updatedUsers = users.filter(
-      (user) => user.username !== username
+      (user) => user?.username !== username
     );
     updateUsers(updatedUsers);
   };
 
-  // Update Balance
+  /* Update Balance */
   const handleBalanceUpdate = (username, value) => {
     const updatedUsers = users.map((user) => {
-      if (user.username === username) {
+      if (user?.username === username) {
         return { ...user, balance: Number(value) };
       }
       return user;
@@ -88,12 +89,13 @@ const Admin = () => {
     updateUsers(updatedUsers);
   };
 
-  // Filtering
-  const filteredUsers = users.filter((user) =>
-    user.username.toLowerCase().includes(search.toLowerCase())
-  );
+  /* Filtering */
+  const filteredUsers = users.filter((user) => {
+    if (!user || !user.username) return false;
+    return user.username.toLowerCase().includes(search.toLowerCase());
+  });
 
-  // Sorting
+  /* Sorting */
   const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (sortType === "balanceAsc") return a.balance - b.balance;
     if (sortType === "balanceDesc") return b.balance - a.balance;
@@ -104,7 +106,7 @@ const Admin = () => {
 
   const totalUsers = users.length;
   const totalBalance = users.reduce(
-    (sum, user) => sum + user.balance,
+    (sum, user) => sum + (user?.balance || 0),
     0
   );
 
@@ -121,8 +123,7 @@ const Admin = () => {
         }}
       >
         <Typography sx={{ fontSize: 14, color: "#ccc" }}>
-          ⚠️ Demo Mode: This application uses localStorage for data persistence.
-          Admin access is available to all logged-in users for demonstration purposes.
+          ⚠️ Demo Mode: This application uses localStorage.
         </Typography>
       </Box>
 
@@ -136,7 +137,7 @@ const Admin = () => {
         <Typography>Total Balance: ₹{totalBalance}</Typography>
       </Box>
 
-      {/* Sorting */}
+      {/* Sorting and Search */}
       <Box sx={{ p: 2 }}>
         <TextField
           select
@@ -144,17 +145,7 @@ const Admin = () => {
           value={sortType}
           onChange={(e) => setSortType(e.target.value)}
           size="small"
-          sx={{
-            minWidth: 150,
-            mr: 2,
-            "& .MuiInputBase-input": { color: "white" },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#aaa" },
-              "&:hover fieldset": { borderColor: "#fff" },
-            },
-            "& .MuiInputLabel-root": { color: "#aaa" },
-            "& .MuiSvgIcon-root": { color: "white" },
-          }}
+          sx={{ minWidth: 150, mr: 2 }}
         >
           <MenuItem value="balanceDesc">Balance ↓</MenuItem>
           <MenuItem value="balanceAsc">Balance ↑</MenuItem>
@@ -165,13 +156,6 @@ const Admin = () => {
           label="Search user"
           size="small"
           onChange={(e) => setSearch(e.target.value)}
-          sx={{
-            "& .MuiInputBase-input": { color: "white" },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#fff" },
-            },
-            "& .MuiInputLabel-root": { color: "#ccc" },
-          }}
         />
       </Box>
 
@@ -213,7 +197,7 @@ const Admin = () => {
       <Paper sx={{ background: "#4d4d4d", color: "white" }}>
         <Table>
           <TableHead>
-            <TableRow sx={{ background: "#3a3a3a" }}>
+            <TableRow>
               <TableCell sx={{ color: "white" }}>Username</TableCell>
               <TableCell sx={{ color: "white" }}>Balance</TableCell>
               <TableCell sx={{ color: "white" }}>Edit Balance</TableCell>

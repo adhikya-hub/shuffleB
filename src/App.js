@@ -16,16 +16,7 @@ import { getCurrentUser } from "./utils/storage";
 
 
 const PrivateRoute = ({ children }) => {
-  const [user, setUser] = useState(undefined);
-
-  useEffect(() => {
-    const currentUser = getCurrentUser();
-    setUser(currentUser);
-  }, []);
-
-  if (user === undefined) {
-    return <div style={{ color: "white" }}>Loading...</div>;
-  }
+  const user = getCurrentUser();
 
   return user ? children : <Navigate to="/login" replace />;
 };
