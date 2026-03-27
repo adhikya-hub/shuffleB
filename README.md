@@ -1,14 +1,16 @@
 # ShuffleB – Betting Card Matching Game
 
-ShuffleB is a responsive betting card game where players combine memory, strategy, and timing to win rewards. Users place bets, match card pairs across two rows, and earn payouts based on successful matches, all within a dynamic, anti-cheat environment.
+## 🔗 Live Demo
+https://shuffleb-nu.vercel.app/
 
 ---
 
 ## Project Overview
 
-This project simulates a full-stack application using only the frontend. It includes authentication, wallet management, game logic, and an admin panel, all powered by React and localStorage.
+ShuffleB is an interactive betting-based card matching game built using React.js.  
+Users can place bets, match card pairs, and earn rewards based on their performance.
 
-The goal is to deliver a realistic gaming experience, while maintaining fair gameplay and clean architecture.
+The application simulates a full-stack system using frontend-only logic, focusing on user experience, game mechanics, and state management.
 
 ---
 
@@ -18,6 +20,7 @@ The goal is to deliver a realistic gaming experience, while maintaining fair gam
 - User Signup & Login
 - Credentials stored securely in localStorage
 - Session persistence across refresh
+
 
 ---
 
@@ -77,5 +80,24 @@ The goal is to deliver a realistic gaming experience, while maintaining fair gam
 - **notistack** – Notifications  
 
 ---
+
+## How to Run Locally
+
+```bash
+git clone https://github.com/your-username/shuffleb.git
+cd betting-game
+npm install
+npm start
+```
+
+---
+
+## Notes
+
+This project is implemented as a frontend-only application using localStorage to simulate backend functionality.
+
+
+
+
 
 

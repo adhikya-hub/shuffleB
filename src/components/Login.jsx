@@ -5,32 +5,32 @@ import { useSnackbar } from "notistack";
 import styles from "../styles/Auth.module.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleLogin = () => {
-    if (!email || !password) {
+    if (!username || !password) {
       return enqueueSnackbar("Please fill all fields", { variant: "warning" });
     }
 
     const users = getUsers();
 
     const user = users.find(
-      (u) => u.email === email && u.password === password
+      (user) => user.username === username && user.password === password
     );
 
     if (!user) {
-      return enqueueSnackbar("Invalid email or password", {
+      return enqueueSnackbar("Invalid username or password", {
         variant: "error",
       });
     }
 
     setCurrentUser(user);
 
-    enqueueSnackbar("Login successful 🎉", { variant: "success" });
+    enqueueSnackbar("Login successful!", { variant: "success" });
 
     setTimeout(() => {
       navigate("/game");
@@ -65,7 +65,7 @@ const Login = () => {
           <input
             className={styles.input}
             placeholder="Username"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <input

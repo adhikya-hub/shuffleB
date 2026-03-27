@@ -49,6 +49,16 @@
 /* card styles */
 .cardWrapper {
   perspective: 1000px;
+  transition: transform 0.2s ease;
+}
+
+.cardWrapper:hover {
+  transform: scale(1.05);
+}
+
+.cardFace {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .cardInner {
@@ -78,12 +88,12 @@
   background: #4d4d4d;
 }
 
-
 .back {
   background: #0a26ff;
   transform: rotateY(180deg);
   
 }
+
 
 /* pulse style for chose bet */
 .pulseText {

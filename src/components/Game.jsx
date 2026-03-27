@@ -9,7 +9,11 @@ import { useSnackbar } from "notistack";
 import ResultModal from "./ResultModal";
 import GameCards from "./GameCards";
 
+/* Constants */
+const MAX_ATTEMPTS = 20;
+const MAX_BET = 5000;
 const FLIP_DURATION = 600;
+const SHUFFLE_DELAY = 5000;
 
 const Game = () => {
   const [row1, setRow1] = useState([]);
@@ -21,7 +25,7 @@ const Game = () => {
   const [bet, setBet] = useState("");
   const [betPlaced, setBetPlaced] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [attempts, setAttempts] = useState(20);
+  const [attempts, setAttempts] = useState(MAX_ATTEMPTS);
 
   const [resultOpen, setResultOpen] = useState(false);
   const [resultType, setResultType] = useState("");
@@ -29,47 +33,57 @@ const Game = () => {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  /* Initialize Game */
   useEffect(() => {
     const { row1, row2 } = generateGame();
     setRow1(row1);
     setRow2(row2);
   }, []);
 
+  /* Auto Shuffle 1. After Delay 2. After Unmatch */
   useEffect(() => {
     if (!gameStarted) return;
     if (selected.length !== 0) return;
 
     const timeout = setTimeout(() => {
-      shuffleAll(matched);
-    }, 5000);
+      shuffleUnmatchedCards(matched);
+    }, SHUFFLE_DELAY);
 
     return () => clearTimeout(timeout);
   }, [selected, matched, gameStarted]);
 
-  const shuffleAll = (matchedList) => {
+  const shuffleUnmatchedCards = (matchedList) => {
     setRow1((prev) => shuffleUnmatched(prev, matchedList));
     setRow2((prev) => shuffleUnmatched(prev, matchedList));
   };
 
-  const handleClick = (value, row, index) => {
+  /* Card Click Logic */
+  const handleCardClick = (value, row, index) => {
     if (!gameStarted) return;
     if (matched.includes(value)) return;
 
-    if (selected.length === 1 && selected[0].row === row) return;
-    if (selected.some((s) => s.row === row && s.index === index)) return;
-    if (selected.length === 2) return;
+    const isSameRowSelection =
+      selected.length === 1 && selected[0].row === row;
 
-    const newSel = [...selected, { value, row, index }];
-    setSelected(newSel);
+    const isSameCardSelected = selected.some(
+      (item) => item.row === row && item.index === index
+    );
 
-    if (newSel.length === 2) {
+    const alreadyTwoSelected = selected.length === 2;
+
+    if (isSameRowSelection || isSameCardSelected || alreadyTwoSelected) return;
+
+    const updatedSelection = [...selected, { value, row, index }];
+    setSelected(updatedSelection);
+
+    if (updatedSelection.length === 2) {
       setAttempts((prev) => prev - 1);
 
-      const [a, b] = newSel;
-      const isMatch = a.value === b.value;
+      const [first, second] = updatedSelection;
+      const isMatch = first.value === second.value;
 
       if (isMatch) {
-        setMatched((prev) => [...prev, a.value]);
+        setMatched((prev) => [...prev, first.value]);
       }
 
       setTimeout(() => {
@@ -78,9 +92,11 @@ const Game = () => {
     }
   };
 
-  // win
+  /* Win Logic */
   useEffect(() => {
-    if (matched.length === 5 && gameStarted) {
+    const allMatched = matched.length === 5;
+
+    if (allMatched && gameStarted) {
       const amount = Number(bet) * 3;
 
       updateBalance(amount);
@@ -92,14 +108,17 @@ const Game = () => {
     }
   }, [matched, gameStarted, bet]);
 
-  // lose
+  /* Lose Logic */
   useEffect(() => {
-    if (attempts === 0 && matched.length < 5 && gameStarted) {
+    const isGameLost = attempts === 0 && matched.length < 5;
+
+    if (isGameLost && gameStarted) {
       setResultType("lose");
       setResultOpen(true);
     }
   }, [attempts, matched, gameStarted]);
 
+  /* Reset Game */
   const resetGame = () => {
     const { row1, row2 } = generateGame();
 
@@ -107,34 +126,49 @@ const Game = () => {
     setRow2(row2);
     setMatched([]);
     setSelected([]);
-    setAttempts(20);
+    setAttempts(MAX_ATTEMPTS);
+
     setGameStarted(false);
     setBetPlaced(false);
     setBet("");
   };
 
-  const isOpen = (row, index) => {
-    return (
-      selected.some((s) => s.row === row && s.index === index) ||
-      matched.some((m) =>
-        row === "row1" ? row1[index] === m : row2[index] === m,
-      )
+  /* Card Open Logic */
+  const isCardOpen = (row, index) => {
+    const isSelected = selected.some(
+      (item) => item.row === row && item.index === index
     );
+
+    const isMatched = matched.some((value) =>
+      row === "row1"
+        ? row1[index] === value
+        : row2[index] === value
+    );
+
+    return isSelected || isMatched;
   };
 
-  // Bet
-  const placeBet = () => {
+  /* Place Bet */
+  const handlePlaceBet = () => {
     const betAmount = Number(bet);
 
-    if (!betAmount || betAmount <= 0)
+    if (!betAmount || betAmount <= 0) {
       return enqueueSnackbar("Enter valid bet", { variant: "warning" });
+    }
 
-    if (betAmount > 5000)
-      return enqueueSnackbar("Max bet ₹5000", { variant: "warning" });
+    if (betAmount > MAX_BET) {
+      return enqueueSnackbar(`Max bet ₹${MAX_BET}`, {
+        variant: "warning",
+      });
+    }
 
     const user = getCurrentUser();
-    if (betAmount > user.balance)
-      return enqueueSnackbar("Insufficient balance", { variant: "warning" });
+
+    if (betAmount > user.balance) {
+      return enqueueSnackbar("Insufficient balance", {
+        variant: "warning",
+      });
+    }
 
     updateBalance(-betAmount);
     window.dispatchEvent(new Event("balanceUpdated"));
@@ -142,7 +176,7 @@ const Game = () => {
     setBetPlaced(true);
   };
 
-  const startGame = () => {
+  const handleStartGame = () => {
     setGameStarted(true);
   };
 
@@ -167,14 +201,21 @@ const Game = () => {
                 value={bet}
                 onChange={(e) => setBet(e.target.value)}
               />
-              <button className={styles.button} onClick={placeBet}>
+              <button
+                className={styles.button}
+                onClick={handlePlaceBet}
+                disabled={!bet}
+              >
                 Add Bet
               </button>
             </>
           ) : (
             <>
               <h3>Bet Amount: ₹{bet}</h3>
-              <button className={styles.button} onClick={startGame}>
+              <button
+                className={styles.button}
+                onClick={handleStartGame}
+              >
                 Start Game
               </button>
             </>
@@ -189,7 +230,7 @@ const Game = () => {
           </Typography>
 
           <Typography variant="h5" className={styles.attempts}>
-            Matches left: {attempts}/20
+            Matches left: {attempts}/{MAX_ATTEMPTS}
           </Typography>
 
           <Box
@@ -208,10 +249,6 @@ const Game = () => {
               sx={{
                 color: "#ff4d4d",
                 borderColor: "#ff4d4d",
-                "&:hover": {
-                  borderColor: "#ff4d4d",
-                  background: "rgba(255,0,0,0.1)",
-                },
               }}
             >
               Quit Game
@@ -221,15 +258,15 @@ const Game = () => {
           <GameCards
             row={row1}
             rowName="row1"
-            isOpen={isOpen}
-            handleClick={handleClick}
+            isOpen={isCardOpen}
+            handleClick={handleCardClick}
           />
 
           <GameCards
             row={row2}
             rowName="row2"
-            isOpen={isOpen}
-            handleClick={handleClick}
+            isOpen={isCardOpen}
+            handleClick={handleCardClick}
           />
         </>
       )}

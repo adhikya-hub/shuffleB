@@ -4,12 +4,12 @@ export const updateBalance = (amount) => {
   let users = getUsers();
   let current = getCurrentUser();
 
-  const updatedUsers = users.map(u => {
-    if (u.email === current.email) {
-      u.balance += amount;
-      current.balance = u.balance;
+  const updatedUsers = users.map(user => {
+    if (user.username === current.username) {
+      user.balance += amount;
+      current.balance = user.balance;
     }
-    return u;
+    return user;
   });
 
   saveUsers(updatedUsers);

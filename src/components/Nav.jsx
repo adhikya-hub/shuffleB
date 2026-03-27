@@ -47,7 +47,7 @@ const Nav = () => {
               whiteSpace: "nowrap",
             }}
           >
-            {user.email}
+            {user.username}
           </Typography>
 
           <Button

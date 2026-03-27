@@ -1,33 +1,45 @@
 import { Box } from "@mui/material";
 import styles from "../styles/Game.module.css";
 
-const rowStyle = {
+const rowContainerStyle = {
   display: "flex",
   justifyContent: "center",
   gap: 2,
   mb: 2,
-  flexWrap: "wrap"
+  flexWrap: "wrap",
 };
 
 const GameCards = ({ row, rowName, isOpen, handleClick }) => {
   return (
-    <Box sx={rowStyle}>
-      {row.map((n, i) => {
-        const open = isOpen(rowName, i);
+    <Box sx={rowContainerStyle}>
+      {row.map((value, index) => {
+        const isCardVisible = isOpen(rowName, index);
 
         return (
           <Box
-            key={i}
+            key={`${rowName}-${index}`}
             className={styles.cardWrapper}
             sx={{
-  width: { xs: 60, sm: 80, md: 100 },
-  height: { xs: 80, sm: 110, md: 130 }
-}}
-            onClick={() => handleClick(n, rowName, i)}
+              width: { xs: 50, sm: 80, md: 100 },
+              height: { xs: 80, sm: 110, md: 130 },
+              cursor: "pointer",
+            }}
+            onClick={() => handleClick(value, rowName, index)}
           >
-            <div className={`${styles.cardInner} ${open ? styles.flip : ""}`}>
-              <div className={`${styles.cardFace} ${styles.front}`}>?</div>
-              <div className={`${styles.cardFace} ${styles.back}`}>{n}</div>
+            <div
+              className={`${styles.cardInner} ${
+                isCardVisible ? styles.flip : ""
+              }`}
+            >
+              {/* Front */}
+              <div className={`${styles.cardFace} ${styles.front}`}>
+                ?
+              </div>
+
+              {/* Back */}
+              <div className={`${styles.cardFace} ${styles.back}`}>
+                {value}
+              </div>
             </div>
           </Box>
         );

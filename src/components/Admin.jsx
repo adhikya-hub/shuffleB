@@ -18,91 +18,126 @@ const Admin = () => {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [sortType, setSortType] = useState("balanceDesc");
+
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newEmail, setNewEmail] = useState("");
+  const [newUsername, setNewUsername] = useState("");
   const [newBalance, setNewBalance] = useState("");
-  
-  // get user data
+
+  // Load users
   useEffect(() => {
     setUsers(getUsers());
   }, []);
 
-  const updateUsers = (updated) => {
-    saveUsers(updated);
-    setUsers(updated);
+  const updateUsers = (updatedUsers) => {
+    saveUsers(updatedUsers);
+    setUsers(updatedUsers);
   };
 
+  // Add User
   const handleAddUser = () => {
-    if (!newEmail.trim() || !newBalance) return alert("Fill all fields");
+    const username = newUsername.trim();
+    const balance = Number(newBalance);
+
+    if (!username || !balance) {
+      return alert("Fill all fields");
+    }
 
     const currentUsers = getUsers();
 
-    const exists = currentUsers.find((u) => u.email === newEmail);
-    if (exists) return alert("User already exists");
+    const exists = currentUsers.find(
+      (user) => user.username === username
+    );
 
-    const updated = [
+    if (exists) {
+      return alert("User already exists");
+    }
+
+    const updatedUsers = [
       ...currentUsers,
       {
-        email: newEmail,
+        username,
         password: "12345678",
-        balance: Number(newBalance),
+        balance,
       },
     ];
 
-    saveUsers(updated);
-    setUsers(updated);
+    updateUsers(updatedUsers);
 
-    setNewEmail("");
+    setNewUsername("");
     setNewBalance("");
     setShowAddForm(false);
   };
 
-  const deleteUser = (email) => {
-    const updated = users.filter((u) => u.email !== email);
-    updateUsers(updated);
+  // Delete User
+  const handleDeleteUser = (username) => {
+    const updatedUsers = users.filter(
+      (user) => user.username !== username
+    );
+    updateUsers(updatedUsers);
   };
 
-  const updateBalance = (email, value) => {
-    const updated = users.map((u) => {
-      if (u.email === email) {
-        return { ...u, balance: Number(value) };
+  // Update Balance
+  const handleBalanceUpdate = (username, value) => {
+    const updatedUsers = users.map((user) => {
+      if (user.username === username) {
+        return { ...user, balance: Number(value) };
       }
-      return u;
+      return user;
     });
-    updateUsers(updated);
+
+    updateUsers(updatedUsers);
   };
 
-  const filtered = users.filter((u) =>
-    u.email.toLowerCase().includes(search.toLowerCase()),
+  // Filtering
+  const filteredUsers = users.filter((user) =>
+    user.username.toLowerCase().includes(search.toLowerCase())
   );
 
-  const sorted = [...filtered].sort((a, b) => {
+  // Sorting
+  const sortedUsers = [...filteredUsers].sort((a, b) => {
     if (sortType === "balanceAsc") return a.balance - b.balance;
     if (sortType === "balanceDesc") return b.balance - a.balance;
-    if (sortType === "alpha") return a.email.localeCompare(b.email);
+    if (sortType === "alpha")
+      return a.username.localeCompare(b.username);
     return 0;
   });
 
   const totalUsers = users.length;
-  const totalBalance = users.reduce((sum, u) => sum + u.balance, 0);
+  const totalBalance = users.reduce(
+    (sum, user) => sum + user.balance,
+    0
+  );
 
   return (
     <Box sx={{ padding: 3 }}>
+      {/* Disclaimer */}
+      <Box
+        sx={{
+          mb: 2,
+          p: 2,
+          borderRadius: 2,
+          background: "rgba(255,255,255,0.05)",
+          border: "1px solid rgba(255,255,255,0.1)",
+        }}
+      >
+        <Typography sx={{ fontSize: 14, color: "#ccc" }}>
+          ⚠️ Demo Mode: This application uses localStorage for data persistence.
+          Admin access is available to all logged-in users for demonstration purposes.
+        </Typography>
+      </Box>
+
       <Typography variant="h4" sx={{ mb: 2 }}>
         Admin Panel
       </Typography>
 
+      {/* Stats */}
       <Box sx={{ display: "flex", gap: 4, mb: 3 }}>
         <Typography>Total Users: {totalUsers}</Typography>
         <Typography>Total Balance: ₹{totalBalance}</Typography>
       </Box>
-      <Box
-        sx={{
-          gap: 2,
 
-          p: 2,
-        }}
-      >
+      {/* Sorting */}
+      <Box sx={{ p: 2 }}>
         <TextField
           select
           label="Sort"
@@ -111,24 +146,14 @@ const Admin = () => {
           size="small"
           sx={{
             minWidth: 150,
-            marginRight: 2,
-            "& .MuiInputBase-input": {
-              color: "white",
-            },
+            mr: 2,
+            "& .MuiInputBase-input": { color: "white" },
             "& .MuiOutlinedInput-root": {
-              "& fieldset": {
-                borderColor: "#aaa",
-              },
-              "&:hover fieldset": {
-                borderColor: "#fff",
-              },
+              "& fieldset": { borderColor: "#aaa" },
+              "&:hover fieldset": { borderColor: "#fff" },
             },
-            "& .MuiInputLabel-root": {
-              color: "#aaa",
-            },
-            "& .MuiSvgIcon-root": {
-              color: "white",
-            },
+            "& .MuiInputLabel-root": { color: "#aaa" },
+            "& .MuiSvgIcon-root": { color: "white" },
           }}
         >
           <MenuItem value="balanceDesc">Balance ↓</MenuItem>
@@ -138,49 +163,31 @@ const Admin = () => {
 
         <TextField
           label="Search user"
-          variant="outlined"
           size="small"
           onChange={(e) => setSearch(e.target.value)}
           sx={{
             "& .MuiInputBase-input": { color: "white" },
             "& .MuiOutlinedInput-root": {
               "& fieldset": { borderColor: "#fff" },
-              "&:hover fieldset": { borderColor: "#fff" },
             },
             "& .MuiInputLabel-root": { color: "#ccc" },
-            "& .MuiSvgIcon-root": { color: "white" },
           }}
         />
       </Box>
 
-      <Box
-        sx={{
-          gap: 2,
-
-          p: 2,
-        }}
-      >
-        {!showAddForm && (
+      {/* Add User */}
+      <Box sx={{ p: 2 }}>
+        {!showAddForm ? (
           <Button variant="contained" onClick={() => setShowAddForm(true)}>
             Add User
           </Button>
-        )}
-
-        {showAddForm && (
+        ) : (
           <Box sx={{ display: "flex", gap: 2, mt: 2, flexWrap: "wrap" }}>
             <TextField
-              label="Email"
+              label="Username"
               size="small"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              sx={{
-                "& .MuiInputBase-input": { color: "white" },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#fff" },
-                  "&:hover fieldset": { borderColor: "#fff" },
-                },
-                "& .MuiInputLabel-root": { color: "#ccc" },
-              }}
+              value={newUsername}
+              onChange={(e) => setNewUsername(e.target.value)}
             />
 
             <TextField
@@ -189,92 +196,46 @@ const Admin = () => {
               size="small"
               value={newBalance}
               onChange={(e) => setNewBalance(e.target.value)}
-              sx={{
-                "& .MuiInputBase-input": { color: "white" },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "#fff" },
-                  "&:hover fieldset": { borderColor: "#fff" },
-                },
-                "& .MuiInputLabel-root": { color: "#ccc" },
-              }}
             />
 
-            <Button
-              variant="contained"
-              onClick={handleAddUser}
-              sx={{
-                background: "#0a26ff",
-                "&:hover": { background: "#081dcc" },
-              }}
-            >
+            <Button variant="contained" onClick={handleAddUser}>
               Add
             </Button>
 
-            <Button
-              variant="outlined"
-              onClick={() => setShowAddForm(false)}
-              sx={{
-                color: "white",
-                borderColor: "white",
-              }}
-            >
+            <Button variant="outlined" onClick={() => setShowAddForm(false)}>
               Cancel
             </Button>
           </Box>
         )}
       </Box>
 
-      <Paper
-        sx={{
-          background: "#4d4d4d",
-          color: "white",
-          overflow: "hidden",
-        }}
-      >
+      {/* Users Table */}
+      <Paper sx={{ background: "#4d4d4d", color: "white" }}>
         <Table>
           <TableHead>
             <TableRow sx={{ background: "#3a3a3a" }}>
-              <TableCell sx={{ color: "white", fontWeight: 600 }}>
-                Email
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: 600 }}>
-                Balance
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: 600 }}>
-                Edit Balance
-              </TableCell>
-              <TableCell sx={{ color: "white", fontWeight: 600 }}>
-                Actions
-              </TableCell>
+              <TableCell sx={{ color: "white" }}>Username</TableCell>
+              <TableCell sx={{ color: "white" }}>Balance</TableCell>
+              <TableCell sx={{ color: "white" }}>Edit Balance</TableCell>
+              <TableCell sx={{ color: "white" }}>Actions</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {sorted.map((u) => (
-              <TableRow
-                key={u.email}
-                sx={{
-                  "&:hover": {
-                    background: "#5a5a5a",
-                  },
-                }}
-              >
-                <TableCell sx={{ color: "white" }}>{u.email}</TableCell>
+            {sortedUsers.map((user) => (
+              <TableRow key={user.username}>
+                <TableCell>{user.username}</TableCell>
 
-                <TableCell sx={{ color: "white" }}>₹{u.balance}</TableCell>
+                <TableCell>₹{user.balance}</TableCell>
 
                 <TableCell>
                   <TextField
                     type="number"
-                    defaultValue={u.balance}
+                    defaultValue={user.balance}
                     size="small"
-                    onBlur={(e) => updateBalance(u.email, e.target.value)}
-                    sx={{
-                      input: { color: "white" },
-                      "& .MuiOutlinedInput-root": {
-                        "& fieldset": { borderColor: "#aaa" },
-                      },
-                    }}
+                    onBlur={(e) =>
+                      handleBalanceUpdate(user.username, e.target.value)
+                    }
                   />
                 </TableCell>
 
@@ -282,7 +243,7 @@ const Admin = () => {
                   <Button
                     color="error"
                     variant="contained"
-                    onClick={() => deleteUser(u.email)}
+                    onClick={() => handleDeleteUser(user.username)}
                   >
                     Delete
                   </Button>

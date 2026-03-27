@@ -5,14 +5,14 @@ import { useSnackbar } from "notistack";
 import styles from "../styles/Auth.module.css";
 
 const Signup = () => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const handleSignup = () => {
-    if (!email || !password) {
+    if (!username || !password) {
       return enqueueSnackbar("All fields are required", { variant: "warning" });
     }
 
@@ -24,17 +24,17 @@ const Signup = () => {
 
     let users = getUsers();
 
-    const exists = users.find((u) => u.email === email);
+    const exists = users.find((u) => u.username === username);
     if (exists) {
       return enqueueSnackbar("User already exists", { variant: "error" });
     }
 
-    const newUser = { email, password, balance: 1000 };
+    const newUser = { username, password, balance: 1000 };
 
     users.push(newUser);
     saveUsers(users);
 
-    enqueueSnackbar("Signup successful 🎉", { variant: "success" });
+    enqueueSnackbar("Signup successful!", { variant: "success" });
 
     setTimeout(() => {
       navigate("/login");
@@ -67,7 +67,7 @@ const Signup = () => {
           <input
             className={styles.input}
             placeholder="Username"
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <input
