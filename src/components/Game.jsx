@@ -10,7 +10,7 @@ import ResultModal from "./ResultModal";
 import GameCards from "./GameCards";
 
 /* Constants */
-const MAX_ATTEMPTS = 20;
+const MAX_ATTEMPTS = 10;
 const MAX_BET = 5000;
 const FLIP_DURATION = 600;
 const SHUFFLE_DELAY = 5000;

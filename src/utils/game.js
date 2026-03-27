@@ -8,7 +8,7 @@ export const generateGame = () => {
   }
 
   return {
-    row1: nums,
+    row1: shuffleArray(nums),
     row2: shuffleArray(nums),
   };
 };
